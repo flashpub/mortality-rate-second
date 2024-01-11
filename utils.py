@@ -1,3 +1,4 @@
+# year classifier
 def year_classification (year):
     if year < 1970 :
         return "1960-1970"
@@ -14,3 +15,6 @@ def year_classification (year):
     else :
         return None
     
+# log-linear function
+def log_linear_function (x, ln_alpha, beta):
+    return ln_alpha + beta * x
