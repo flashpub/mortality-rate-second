@@ -101,3 +101,15 @@ def test_distribution_and_compare_sexes(data, value_column, group_column, alpha=
                 print("Conclusion: There is a significant difference between Men and Women.")
             else:
                 print("Conclusion: There is no significant difference between Men and Women.")
+
+
+def calculate_statistics(data, age_groups):
+    
+    grouped_data = data[data['Age Group'].isin(age_groups)].groupby('Age Group')
+    
+    mean_values = grouped_data['Death rate per 100 000 population'].mean()
+    max_values = grouped_data['Death rate per 100 000 population'].max()
+    min_values = grouped_data['Death rate per 100 000 population'].min()
+    std_values = grouped_data['Death rate per 100 000 population'].std()
+    
+    return mean_values, max_values, min_values,std_values
