@@ -1,3 +1,11 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+from scipy.stats import weibull_min
+from scipy.stats import shapiro
+
+
 # year classifier
 def year_classification (year):
     if year < 1970 :
@@ -19,8 +27,13 @@ def year_classification (year):
 def log_linear_function (x, ln_alpha, beta):
     return ln_alpha + beta * x
 
-#check distribution and compare genders function 
+# exponential function
+def exponential_function(x, a, b):
+    return a * np.exp(b * x)
+
+#check distribution and compare genders functions 
 def test_distribution_and_compare_sexes(data, value_column, group_column, alpha=0.05):
+    
     # Extract the specific column for testing
     data_to_test = data[value_column]
     
@@ -58,6 +71,7 @@ def test_distribution_and_compare_sexes(data, value_column, group_column, alpha=
             print(f'Log-transformed {value_column} is approximately normally distributed.')
             
             # Plot a histogram of the initial variable when distribution is log-normal
+            plt.figure(dpi = 480)
             plt.hist(data_to_test, bins=20, color='blue', alpha=0.7)
             plt.title(f'Histogram of {value_column}')
             plt.xlabel('Value')
@@ -81,6 +95,7 @@ def test_distribution_and_compare_sexes(data, value_column, group_column, alpha=
             print(f'Log-transformed {value_column} is also not normally distributed.')
             
             # Plot a histogram of the initial variable when non-normal
+            plt.figure(dpi = 480)
             plt.hist(data_to_test, bins=20, color='blue', alpha=0.7)
             plt.title(f'Histogram of {value_column}')
             plt.xlabel('Value')
@@ -101,3 +116,16 @@ def test_distribution_and_compare_sexes(data, value_column, group_column, alpha=
                 print("Conclusion: There is a significant difference between Men and Women.")
             else:
                 print("Conclusion: There is no significant difference between Men and Women.")
+
+
+
+def calculate_statistics(data, age_groups):
+    
+    grouped_data = data[data['Age Group'].isin(age_groups)].groupby('Age Group')
+    
+    mean_values = grouped_data['Death rate per 100 000 population'].mean()
+    max_values = grouped_data['Death rate per 100 000 population'].max()
+    min_values = grouped_data['Death rate per 100 000 population'].min()
+    std_values = grouped_data['Death rate per 100 000 population'].std()
+    
+    return mean_values, max_values, min_values,std_values
